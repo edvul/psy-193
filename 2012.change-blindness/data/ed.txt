@@ -1,0 +1,9 @@
+iterations	image	attempts	loopTime	trialTime	
+0	im000	1	569	569	
+1	im001	1	816	816	
+1	im002	1	879	879	
+1	im003	1	1057	1057	
+1	im004	1	1345	1345	
+1	im005	2	1282	1282	
+1	im006	1	872	872	
+1	im007	1	1311	1311	
