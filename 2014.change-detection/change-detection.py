@@ -34,12 +34,35 @@ textClick = FONT.render('Click on the location of the change.', 1, colFont)
 textFBbad = FONT.render('Wrong location!', 1, (160,0,0))
 textFBgood = FONT.render('Right!', 1, (0,160,0))
 
+trialPath = os.path.join('.', 'Stimuli', 'Experiment')
+trialSets = next(os.walk('trialPath'))[1]
+practicePath = os.path.join('.', 'Stimuli', 'Practice')
+practiceSets = next(os.walk('practicePath'))[1]
+
 images = glob.glob(os.path.join('imgA', '*.jpg'))
 imageNames = map(lambda fn: string.split(string.split(fn, os.sep)[1], '.')[0], images)
 
 #	Print: “Thank you for volunteering to participate in our experiment. Please press the spacebar to continue.”
 #	Wait for spacebar press.
 
+class ImageSet(object):
+	def __init__(self, setPath, setName):
+		self.imageA = pygame.image.load(os.path.join('setPath', setName, setName+'A.JPG'))
+		self.imageB = pygame.image.load(os.path.join('setPath', setName, setName+'B.JPG'))
+		fileA = open(os.path.join('setPath', setName+'A.txt'), 'r')
+		self.A1 = map(lambda x: int(float(x)), fileA.readline().split(','))
+		self.A2 = map(lambda x: int(float(x)), fileA.readline().split(','))
+		fileA.close()
+		fileB = open(os.path.join('setPath', setName+'B.txt'), 'r')
+		self.B1 = map(lambda x: int(float(x)), fileB.readline().split(','))
+		self.B2 = map(lambda x: int(float(x)), fileB.readline().split(','))
+		fileB.close()
+	def CoordsIn(self, x, y, C1, C2):
+		return(C1[0] <= x <= C2[0] & C1[1] <= y <= C2[1])
+	def CoordsInA(self, x, y):
+		return(self.CoordsIn(x, y, self.A1, self.A2))
+	def coordsInB(self, x, y):
+		return(self.CoordsIn(x, y, self.B1, self.B2))
 
 def quit():
 	FILE.close()
