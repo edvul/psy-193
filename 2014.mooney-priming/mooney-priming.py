@@ -20,7 +20,7 @@ imgPos = (0,0)
 recordedKeys = []
 stimPath = os.path.join('.', 'Stimuli')
 listfile = "list1.txt"
-allimages = map(lambda x: "MoodyImage%02d"%x, range(1,2))
+allimages = list(map(lambda x: "MoodyImage%02d"%x, range(1,2)))
 textCol = (0,0,0)
 first = True
 
@@ -30,7 +30,7 @@ if(DEBUG): timing = {"list":3*1000, "blank":0.5*1000, "break":0.5*1000, "image.o
 
 # set up subject details
 os.system('cls' if os.name == 'nt' else 'clear')
-subject = raw_input('Please enter the subject ID: ')
+subject = input('Please enter the subject ID: ')
 FILE = open(os.path.join('data', subject + '_mooney.csv'), 'a')
 FILE.write('Subject: %s\n' 	% subject)
 
@@ -40,20 +40,22 @@ FILEMEM.write('%s,%s,%s,%s\n' 	% ('repetition', 'responseTime', 'anyresponse', '
 
 demofile = open(os.path.join('data', 'subjectsdemo.txt'), 'a')
 demofile.write(str(subject))
-demofile.write(', %s' 		% raw_input('Enter Name' ).strip())
-demofile.write(', %s' 		% raw_input('Enter Age' ).strip())
-demofile.write(', %s\n' 	% raw_input('Enter Gender').strip())
+demofile.write(', %s' 		% input('Enter Name' ).strip())
+demofile.write(', %s' 		% input('Enter Age' ).strip())
+demofile.write(', %s\n' 	% input('Enter Gender').strip())
 demofile.close()
 
 pygame.init()
 pygame.mixer.init()
 pygame.event.set_grab(1)
 if(DEBUG):
-	SCREEN = pygame.display.set_mode((1024,768), 16) #pygame.FULLSCREEN
+	SCREEN = pygame.display.set_mode((1024,768), pygame.FULLSCREEN) #pygame.FULLSCREEN
 else:
 	SCREEN = pygame.display.set_mode((1024,768), pygame.FULLSCREEN)
 
 FONT = pygame.font.Font(None, fontSize)
+
+FONT2 = pygame.font.Font(None, fontSize+10)
 
 def quit(complete):
 	FILE.close()
@@ -122,7 +124,7 @@ def reportList(SCREEN):
 				responses[curword] = responses[curword][:-1]
 			if (event.type == KEYDOWN and event.key == K_RETURN):
 				curword = (curword+1 if curword<23 else curword)
-			if (event.type == KEYDOWN and (event.unicode in string.lowercase or event.unicode in string.uppercase)):
+			if (event.type == KEYDOWN and (event.unicode in string.ascii_lowercase or event.unicode in string.ascii_uppercase)):
 				responses[curword] += event.unicode
 			if (event.type == KEYDOWN and event.key == K_ESCAPE):
 				quit(False)
@@ -139,10 +141,10 @@ def writeTrial(FILE, trialOutput, first):
 	if first:
 		first = False
 		global recordedKeys
-		for k,v in trialOutput.iteritems():
+		for k in trialOutput.keys():
 			header += k + ',\t'
 			recordedKeys.append(k)
-			line += str(v) + ',\t'
+			line += str(trialOutput[k]) + ',\t'
 		FILE.write(header+'\n')
 	else:
 		for k in recordedKeys:
@@ -181,7 +183,7 @@ def showText(SCREEN, text, pos=textPos, textCol=colFont):
 	renderedLines = list()
 	for n in range(0,nlines):
 		renderedLines.append(FONT.render(lines[n], 1, textCol))
-	totalHeight = sum(map(lambda x: x.get_rect().height, renderedLines))
+	totalHeight = sum(list(map(lambda x: x.get_rect().height, renderedLines)))
 	for n in range(0,nlines):
 		textpos = renderedLines[n].get_rect()
 		textpos.centerx = SCREEN.get_rect().centerx
@@ -214,8 +216,8 @@ def runTrial(SCREEN, imPath, imName, timing):
 		curtime = pygame.time.get_ticks()-timeTrialStart
 		if(curtime > timing['image.on']): display = False
 		if(curtime > timing['timeout']): timeout = True
-		SCREEN.blit(image, imgPos)
-		curtext = FONT.render(response+'_', 1, textCol)
+		if(display): SCREEN.blit(image, imgPos)
+		curtext = FONT2.render(response+'_', 1, (255,0,0))
 		textpos = curtext.get_rect()
 		textpos.centerx = SCREEN.get_rect().centerx
 		textpos.bottom = SCREEN.get_rect().bottom
@@ -226,7 +228,7 @@ def runTrial(SCREEN, imPath, imName, timing):
 				response = response[:-1]
 			if (event.type == KEYDOWN and event.key == K_RETURN and len(response)>0):
 				finished = True
-			if (event.type == KEYDOWN and (event.unicode in string.lowercase or event.unicode in string.uppercase)):
+			if (event.type == KEYDOWN and (event.unicode in string.ascii_lowercase or event.unicode in string.ascii_uppercase)):
 				response += event.unicode
 			if (event.type == KEYDOWN and event.key == K_ESCAPE):
 				quit(False)
@@ -244,7 +246,7 @@ waitQuit(timing['blank'])
 showText(SCREEN, 'In the following screen please attempt to type out as many of the words as you can remember. \n You can type them in any order, just list as many as you can. \n Please take as long as you feel that you need. \n Press <Next> when you feel that you are finished. \n \n Press <Enter> to continue.')
 waitForKey(K_RETURN)
 responses,responseTime = reportList(SCREEN)
-anyresponse = int(any(map(lambda x: len(x)>0, responses)))
+anyresponse = int(any(list(map(lambda x: len(x)>0, responses))))
 FILEMEM.write('%d,%d,%d,%s\n' 	% (1, responseTime, anyresponse, ','.join(responses)))
 
 
@@ -256,13 +258,13 @@ waitQuit(timing['list'])
 showText(SCREEN, 'Now please attempt to recall as many words as you can in the following screen, in any order. \n Be sure to also include words that you listed last time. \n Once again, please take as a long as you need. \n Press <Next> when you feel that you are finished. \n \n Press <Enter > to continue.')
 waitForKey(K_RETURN)
 responses,responseTime = reportList(SCREEN)
-anyresponse = int(any(map(lambda x: len(x)>0, responses)))
+anyresponse = int(any(list(map(lambda x: len(x)>0, responses))))
 FILEMEM.write('%d,%d,%d,%s\n' 	% (2, responseTime, anyresponse, ','.join(responses)))
 
 showText(SCREEN, 'Like before, please attempt to recall the list of words. \n This time, the list will not be displayed to you. \nOnce again, take as long as you need. \nPress <Next> when you feel that you are finished. \n \n Press <Enter > to continue')
 waitForKey(K_RETURN)
 responses,responseTime = reportList(SCREEN)
-anyresponse = int(any(map(lambda x: len(x)>0, responses)))
+anyresponse = int(any(list(map(lambda x: len(x)>0, responses))))
 FILEMEM.write('%d,%d,%d,%s\n' 	% (3, responseTime, anyresponse, ','.join(responses)))
 
 showText(SCREEN, 'Thank you. \n \n Part 1 of the study is now complete. \n \n Please press <Enter > to move on to Part 2.')
@@ -279,6 +281,10 @@ waitForKey(K_RETURN)
 
 trialOutput = runTrial(SCREEN, stimPath, 'practice', timing)
 first = writeTrial(FILE, trialOutput, first)
+
+
+showText(SCREEN, 'We will now begin the experiment.\n \n press <Enter> to begin.')
+waitForKey(K_RETURN)
 
 for imageName in allimages:
 	trialOutput = runTrial(SCREEN, stimPath, imageName, timing)
