@@ -29,7 +29,7 @@ if(DEBUG): timing = {"list":3*1000, "blank":0.5*1000, "break":0.5*1000, "image.o
 # set up subject details
 os.system('cls' if os.name == 'nt' else 'clear')
 subject = int(input('Please enter the subject ID: '))
-if mod(subject,2)==0:
+if (subject % 2)==0:
 	listfile = 'list2.txt'
 else:
 	listfile = 'list1.txt'
