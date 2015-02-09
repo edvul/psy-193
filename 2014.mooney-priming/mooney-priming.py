@@ -34,10 +34,10 @@ if (subject % 2)==0:
 else:
 	listfile = 'list1.txt'
 
-FILE = open(os.path.join('data', subject + '_mooney.csv'), 'a')
+FILE = open(os.path.join('data', str(subject) + '_mooney.csv'), 'a')
 FILE.write('Subject: %s\n' 	% subject)
 
-FILEMEM = open(os.path.join('data', subject + '_memory.csv'), 'a')
+FILEMEM = open(os.path.join('data', str(subject) + '_memory.csv'), 'a')
 FILEMEM.write('Subject: %s\n' 	% subject)
 FILEMEM.write('%s\t%s\t%s\t%s\n' 	% ('repetition', 'responseTime', 'anyresponse', ','.join(map(lambda x: 'response_'+str(x), range(1,26)))))
 
