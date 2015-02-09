@@ -19,7 +19,6 @@ textPos = (1,1)
 imgPos = (0,0)
 recordedKeys = []
 stimPath = os.path.join('.', 'Stimuli')
-listfile = "list1.txt"
 allimages = list(map(lambda x: "MoodyImage%02d"%x, range(1,2)))
 textCol = (0,0,0)
 first = True
@@ -36,7 +35,7 @@ FILE.write('Subject: %s\n' 	% subject)
 
 FILEMEM = open(os.path.join('data', subject + '_memory.csv'), 'a')
 FILEMEM.write('Subject: %s\n' 	% subject)
-FILEMEM.write('%s,%s,%s,%s\n' 	% ('repetition', 'responseTime', 'anyresponse', ','.join(map(lambda x: 'response_'+str(x), range(1,26)))))
+FILEMEM.write('%s\t%s\t%s\t%s\n' 	% ('repetition', 'responseTime', 'anyresponse', ','.join(map(lambda x: 'response_'+str(x), range(1,26)))))
 
 demofile = open(os.path.join('data', 'subjectsdemo.txt'), 'a')
 demofile.write(str(subject))

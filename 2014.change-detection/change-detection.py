@@ -20,24 +20,24 @@ imgPos = (0,0)
 timingPractice1 = {"image":1000, "blank":100, "expired":60*60*1000}
 timingPractice2 = {"image":560, "blank":100, "expired":60*60*1000}
 timingTrial = {"image":560, "blank":100, "expired":60*1000}
-recordedKeys = []
+recordedKeys = ['image', 'time', 'clickAttempts', 'allClicks']
 
 # set up subject details
 os.system('cls' if os.name == 'nt' else 'clear')
 if(not DEBUG):
-	subject = raw_input('Please enter the subject ID: ')
+	subject = input('Please enter the subject ID: ')
 else:
 	subject = "DEBUG"
 FILE = open(os.path.join('data', subject + '.csv'), 'a')
 FILE.write('Subject: %s\n' 	% subject)
 
 if(not DEBUG):
-	FILE.write('\tage: %s\n' 	% raw_input('What is your age? [enter an integer]' ).strip())
-	FILE.write('\tgender: %s\n' % raw_input('What is your gender?' ).strip())
-	FILE.write('\trace: %s\n' 	% raw_input('What is your race? (write "Decline to answer" if you prefer not to answer) ').strip())
-	FILE.write('\tvision: %s\n' 	% raw_input('Do you have normal/corrected-to-normal vision? [Y/N] ').strip())
-	FILE.write('\teducation: %s\n' % raw_input('What is your education? ').strip())
-	FILE.write('\tmajor: %s\n' % raw_input('What is your major? ').strip())
+	FILE.write('\tage: %s\n' 	% input('What is your age? [enter an integer]' ).strip())
+	FILE.write('\tgender: %s\n' % input('What is your gender?' ).strip())
+	FILE.write('\trace: %s\n' 	% input('What is your race? (write "Decline to answer" if you prefer not to answer) ').strip())
+	FILE.write('\tvision: %s\n' 	% input('Do you have normal/corrected-to-normal vision? [Y/N] ').strip())
+	FILE.write('\teducation: %s\n' % input('What is your education? ').strip())
+	FILE.write('\tmajor: %s\n' % input('What is your major? ').strip())
 
 
 pygame.init()
@@ -64,12 +64,12 @@ class ImageSet(object):
 		self.imageA = pygame.image.load(os.path.join(setPath, setName, setName+'A.JPG'))
 		self.imageB = pygame.image.load(os.path.join(setPath, setName, setName+'B.JPG'))
 		fileA = open(os.path.join(setPath, setName, setName+'A.txt'), 'r')
-		self.A1 = map(int, fileA.readline().strip().split(','))
-		self.A2 = map(int, fileA.readline().strip().split(','))
+		self.A1 = list(map(int, fileA.readline().strip().split(',')))
+		self.A2 = list(map(int, fileA.readline().strip().split(',')))
 		fileA.close()
 		fileB = open(os.path.join(setPath, setName, setName+'B.txt'), 'r')
-		self.B1 = map(int, fileB.readline().strip().split(','))
-		self.B2 = map(int, fileB.readline().strip().split(','))
+		self.B1 = list(map(int, fileB.readline().strip().split(',')))   
+		self.B2 = list(map(int, fileB.readline().strip().split(',')))
 		fileB.close()
 	def CoordsIn(self, x, y, C1, C2):
 		inside = ((C1[0] <= x <= C2[0]) & (C1[1] <= y <= C2[1]))
@@ -94,16 +94,14 @@ def writeTrial(FILE, trialOutput, first):
 	if first:
 		first = False
 		global recordedKeys
-		for k,v in trialOutput.iteritems():
-			header += k + ',\t'
-			recordedKeys.append(k)
-			line += str(v) + ',\t'
-		FILE.write(header+'\n')
-	else:
 		for k in recordedKeys:
-			line += str(trialOutput[k]) + ',\t'
+			header += k + ',\t'
+		FILE.write(header+'\n')
+	for k in recordedKeys:
+		line += str(trialOutput[k]) + ',\t'
 	FILE.write(line+'\n')
 	return(first)
+
 
 def waitForKey(target_key):
 	wait = True
