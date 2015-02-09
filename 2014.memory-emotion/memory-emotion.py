@@ -37,6 +37,7 @@ pygame.init()
 pygame.mixer.init()
 pygame.event.set_grab(1)
 if(DEBUG):
+	os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (50,50)
 	SCREEN = pygame.display.set_mode((1024,768), 16) #pygame.FULLSCREEN
 else:
 	SCREEN = pygame.display.set_mode((1024,768), pygame.FULLSCREEN)

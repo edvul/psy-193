@@ -26,10 +26,14 @@ first = True
 timing = {"list":40*1000, "blank":3*1000, "break":5*1000, "image.on":5*1000, "timeout":10*1000}
 if(DEBUG): timing = {"list":3*1000, "blank":0.5*1000, "break":0.5*1000, "image.on":5*1000, "timeout":10*1000}
 
-
 # set up subject details
 os.system('cls' if os.name == 'nt' else 'clear')
-subject = input('Please enter the subject ID: ')
+subject = int(input('Please enter the subject ID: '))
+if mod(subject,2)==0:
+	listfile = 'list2.txt'
+else:
+	listfile = 'list1.txt'
+
 FILE = open(os.path.join('data', subject + '_mooney.csv'), 'a')
 FILE.write('Subject: %s\n' 	% subject)
 
@@ -39,6 +43,7 @@ FILEMEM.write('%s\t%s\t%s\t%s\n' 	% ('repetition', 'responseTime', 'anyresponse'
 
 demofile = open(os.path.join('data', 'subjectsdemo.txt'), 'a')
 demofile.write(str(subject))
+demofile.write(', %s' 		% listfile)
 demofile.write(', %s' 		% input('Enter Name' ).strip())
 demofile.write(', %s' 		% input('Enter Age' ).strip())
 demofile.write(', %s\n' 	% input('Enter Gender').strip())
