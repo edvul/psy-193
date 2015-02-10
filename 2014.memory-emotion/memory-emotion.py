@@ -138,7 +138,10 @@ def runTrial(SCREEN, imPath, imSet, timing):
 	random.shuffle(items)
 	for s in items:
 		SCREEN.fill(colBackground)
-		SCREEN.blit(trialSet.probe[s], imgPos)
+		imRect = trialSet.probe[s].get_rect()
+		imRect.centerx = SCREEN.get_rect().centerx
+		imRect.centery = SCREEN.get_rect().centery
+		SCREEN.blit(trialSet.probe[s], imRect)
 		pygame.display.flip()
 		responses[s],responseTimes[s] = waitForYN()
 	totalTime = pygame.time.get_ticks() - timeTrialStart
