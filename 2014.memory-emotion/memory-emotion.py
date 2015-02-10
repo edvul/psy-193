@@ -47,6 +47,7 @@ FONT = pygame.font.Font(None, fontSize)
 class ImageSet(object):
 	def __init__(self, setPath, setName):
 		self.image = pygame.image.load(os.path.join(setPath, setName, setName+'.jpg'))
+		# self.image = pygame.transform.scale(self.image, (1024, 768))
 		Q = trialSets
 		Q.remove(setName)
 		self.probe = {}
@@ -54,12 +55,14 @@ class ImageSet(object):
 		self.itemName = {}
 		for s in ['a', 'b', 'c']:
 			self.probe[s] = pygame.image.load(os.path.join(setPath, setName, s+'.jpg'))
+			# self.probe[s] = pygame.transform.scale(self.probe[s], (1024, 768))
 			self.itemName[s] = "%s-%s.jpg"%(setName,s)
 			self.correct[s] = 1
 		for s in ['d', 'e', 'f']:
 			curSet = random.choice(Q)
 			curItem = random.choice(['a', 'b', 'c'])
 			self.probe[s] = pygame.image.load(os.path.join(setPath, curSet, curItem+'.jpg'))
+			# self.probe[s] = pygame.transform.scale(self.probe[s], (1024, 768))
 			self.itemName[s] = "%s-%s.jpg"%(curSet,curItem)
 			self.correct[s] = 0
 

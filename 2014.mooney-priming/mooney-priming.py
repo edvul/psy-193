@@ -19,11 +19,11 @@ textPos = (1,1)
 imgPos = (0,0)
 recordedKeys = []
 stimPath = os.path.join('.', 'Stimuli')
-allimages = list(map(lambda x: "MoodyImage%02d"%x, range(1,2)))
+allimages = list(map(lambda x: "MoodyImage%02d"%x, range(1,21)))
 textCol = (0,0,0)
 first = True
 
-timing = {"list":40*1000, "blank":3*1000, "break":5*1000, "image.on":5*1000, "timeout":10*1000}
+timing = {"list":40*1000, "blank":3*1000, "break":5*1000, "image.on":10*1000, "timeout":15*1000}
 if(DEBUG): timing = {"list":3*1000, "blank":0.5*1000, "break":0.5*1000, "image.on":5*1000, "timeout":10*1000}
 
 # set up subject details
@@ -127,7 +127,7 @@ def reportList(SCREEN):
 			if (event.type == KEYDOWN and event.key == K_BACKSPACE):
 				responses[curword] = responses[curword][:-1]
 			if (event.type == KEYDOWN and event.key == K_RETURN):
-				curword = (curword+1 if curword<23 else curword)
+				curword = (curword+1 if curword<24 else curword)
 			if (event.type == KEYDOWN and (event.unicode in string.ascii_lowercase or event.unicode in string.ascii_uppercase)):
 				responses[curword] += event.unicode
 			if (event.type == KEYDOWN and event.key == K_ESCAPE):
@@ -277,7 +277,7 @@ waitForKey(K_RETURN)
 showText(SCREEN, '')
 waitQuit(timing['break'])
 
-showText(SCREEN, 'In the following slides you will see some images that may appear, at first, to be ambiguous. \n These are what are known as Mooney images.  \n Mooney images are two-tone derivations of natural images \n made by thresholding photographs under asymmetrical lighting conditions. \n Although some information about the photographed subject will be degraded, please identify the image presented onscreen.  \n Write your response in the space provided. \n Press <Enter> when you have finished writing your response. \n If you are unable to identify the image, type "none"  and press <Enter> to move to the next image.\n \n You will have 5 seconds to view each image, though you may provide your response at any time.\n \n Press <Enter> to begin trial.')
+showText(SCREEN, 'In the following slides you will see some images that may appear, at first, to be ambiguous. \n These are what are known as Mooney images.  \n Mooney images are two-tone derivations of natural images \n made by thresholding photographs under asymmetrical lighting conditions. \n Although some information about the photographed subject will be degraded, please identify the image presented onscreen.  \n Write your response in the space provided. \n Press <Enter> when you have finished writing your response. \n  \n You will have 10 seconds to view each image, though you may provide your response at any time.\n \n Press <Enter> to begin trial.')
 waitForKey(K_RETURN)
 
 showText(SCREEN, 'To acquaint you with what these images look like we will begin with a practice trial.\n \n Please identify the image and provide your response.\n \n Press <Enter> when done to move to the next image.')
