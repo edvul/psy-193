@@ -119,7 +119,7 @@ def showText(SCREEN, text, pos=textPos, textCol=colFont):
 	renderedLines = list()
 	for n in range(0,len(lines)):
 		renderedLines.append(FONT.render(lines[n], 1, textCol))
-	totalHeight = sum(map(lambda x: x.get_rect().height, renderedLines))
+	totalHeight = sum(list(map(lambda x: x.get_rect().height, renderedLines)))
 	for n in range(0,len(lines)):
 		textpos = renderedLines[n].get_rect()
 		textpos.centerx = SCREEN.get_rect().centerx
