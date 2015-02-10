@@ -79,7 +79,6 @@ def writeTrial(FILE, trialOutput, first):
 		global recordedKeys
 		for k in recordedKeys:
 			header += k + ',\t'
-			line += str(v) + ',\t'
 		FILE.write(header+'\n')
 	for k in recordedKeys:
 		line += str(trialOutput[k]) + ',\t'
@@ -144,7 +143,7 @@ def runTrial(SCREEN, imPath, imSet, timing):
 		responses[s],responseTimes[s] = waitForYN()
 	totalTime = pygame.time.get_ticks() - timeTrialStart
 	trialData = {'image':imSet, 'time':totalTime, 'order':'-'.join(items)}
-	for s in probes:
+	for s in items:
 		if(DEBUG): print(responses[s])
 		if(DEBUG): print(responseTimes[s])
 		if(DEBUG): print(trialSet.correct[s])
@@ -153,7 +152,7 @@ def runTrial(SCREEN, imPath, imSet, timing):
 		trialData[s+'_response'] = responses[s]
 		trialData[s+'_responseTime'] = responseTimes[s]
 		trialData[s+'_correct'] = int(responses[s]==trialSet.correct[s])
-		trialData[s+'_item'] = str(trialSet.itemName[s])
+		trialData[s+'_itemName'] = str(trialSet.itemName[s])
 	return(trialData)
 
 showText(SCREEN, 'You will be shown a series of pictures, one at a time. \n Each picture will only be shown once for six seconds. \n After each picture, you will be shown various objects. \n You will have to answer yes or no as to whether you\'ve seen the object in the previous picture. \n Push the "Y" key if you think the object was in the previous picture, \n and push the "N" key if you think the object was not in the previous picture. \n After you have been shown 10 pictures, you will watch a short video before continuing with the final set of images. \n \n Press the SPACE bar to begin. ')
